@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+//import 'question.dart';
+import 'dart:async';
+import 'dart:convert';
+//import 'package:http/http.dart';
+//import 'package:http_requests/http_requests.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -11,6 +16,9 @@ class Quizzler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey.shade400,
+        ),
         backgroundColor: Colors.grey.shade900,
         body: SafeArea(
           child: Padding(
@@ -24,6 +32,7 @@ class Quizzler extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
+  //const QuizPage({Key? key}) : super(key: key);
   @override
   _QuizPageState createState() => _QuizPageState();
 }
@@ -32,31 +41,67 @@ class _QuizPageState extends State<QuizPage> {
   // create list to keep score of correct/wrong answers
   List<Icon> scoreKeeper = [];
 
-  void checkAnswer(bool userAns) {
-    bool correctAns = quizBrain.getQuestionAns();
+  String currentQ = "";
+
+  void setCurrentQ() async {
+    String qtext = await quizBrain.getQuestionText();
 
     setState(() {
-      if (quizBrain.isFinished() == true) {
-        Alert(
-          context: context,
-          title: 'Finished',
-          desc: 'The quiz is done.',
-        ).show();
+      currentQ = qtext;
+    });
+  }
 
-        // reset quiz
-        quizBrain.reset();
-        // reset score keeper
-        scoreKeeper = [];
-      } else {
+  void checkAnswer(bool userAns) async {
+    bool correctAns = await quizBrain.getCorrectAnswer();
+    bool isFinished = await quizBrain.isFinished();
+
+    // update the state to match the api results
+    setState(() {
+      if (isFinished) {
         if (userAns == correctAns) {
           scoreKeeper.add(Icon(Icons.check, color: Colors.green));
         } else {
           scoreKeeper.add(Icon(Icons.close, color: Colors.red));
         }
 
-        setState(() {
-          quizBrain.nextQuestion();
-        });
+        Alert(
+          style: AlertStyle(
+            isCloseButton: false,
+            isOverlayTapDismiss: false,
+          ),
+          //TODO: add alert image
+          context: context,
+          title: 'Finished',
+          desc: 'Close to go to the next quiz',
+          buttons: [
+            DialogButton(
+              onPressed: () {
+                Navigator.pop(context);
+                quizBrain.reset();
+                // empty scorekeeper for next quiz
+                scoreKeeper = [];
+              },
+              width: 120.0,
+              child: const Text(
+                "Close",
+                style: TextStyle(color: Colors.red, fontSize: 25.0),
+              ),
+            )
+          ],
+        ).show();
+      } else {
+        if (userAns == correctAns) {
+          scoreKeeper.add(const Icon(
+            Icons.check,
+            color: Colors.red,
+          ));
+        } else {
+          scoreKeeper.add(const Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+        quizBrain.nextQuestion();
       }
     });
   }
@@ -67,25 +112,23 @@ class _QuizPageState extends State<QuizPage> {
   //   // TODO: implement build
   //   throw UnimplementedError();
   // }
-
-  // List<bool> answers = [false, true, true];
-
   @override
   Widget build(BuildContext context) {
+    // init current question text pull
+    setCurrentQ();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        // Question area
         Expanded(
           flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.getQuestionText(),
+                currentQ,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -109,12 +152,10 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                quizBrain.getQuestionText();
-
+                // quizBrain.getQuestionText();
+                print('user picked true');
                 checkAnswer(true);
-              },
-
-              //The user picked true.
+              }, // ^ The user picked true. ^
             ),
           ),
         ),
@@ -133,8 +174,6 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                // quizBrain.getQuestionAns();
-
                 checkAnswer(false);
               },
             ),
@@ -143,8 +182,64 @@ class _QuizPageState extends State<QuizPage> {
         Row(
           children: scoreKeeper,
         )
-        //TODO: add api implementation
       ],
     );
   }
 }
+
+//************************************************************************
+// Alternative way to display api info onto screen, much more complicated
+// found a better way, but left in old code for future reference.
+//************************************************************************
+// child: FutureBuilder(
+//   future: getQuestionText(),
+//   builder: (context, snapshot) {
+//     switch (snapshot.connectionState) {
+//       case ConnectionState.none:
+//         return Text('none');
+//       case ConnectionState.active:
+//         return Text('active');
+//       case ConnectionState.waiting:
+//         return Text('waiting');
+//       case ConnectionState.done:
+//         return Text(
+//           snapshot.data,
+//           textAlign: TextAlign.center,
+//           style: TextStyle(fontSize: 25.0, color: Colors.white),
+//         );
+//       default:
+//         return Text('default');
+
+//*******************************************************************
+// Code before API implementation RIP.
+//*******************************************************************
+//
+//       children: <Widget>[
+//         // flex: 5,
+//         // child: Padding(
+//         //   padding: EdgeInsets.all(10.0),
+//         //   child: Center(
+//         //     child: FutureBuilder<String>(
+//         //       future: getQuestionText(),
+//         //       builder:
+//         //           (BuildContext context, AsyncSnapshot<String> questiontxt) {
+//         //         child:
+//         //         return Text(
+//         //           getQuestion() as Future<String>,
+//         //           style: TextStyle(color: Colors.white, fontSize: 25.0),
+//         //         );
+//         //       },
+//         //     ),
+//         //     // child: Text(
+//         //     //   // finally figured out the error, casted as string instead
+//         //     //   // of future<String>... maybe it works maybe not.
+//         //     //   getQuestionText(), //quizBrain.getQuestionText(),
+//         //     //   textAlign: TextAlign.center,
+//         //     //   style: TextStyle(
+//         //     //     fontSize: 25.0,
+//         //     //     color: Colors.white,
+//         //     //   ),
+//         //     // ),
+//         //   ),
+//         // ),
+//
