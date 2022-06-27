@@ -1,32 +1,31 @@
 ![App Brewery Banner](https://github.com/londonappbrewery/Images/blob/master/AppBreweryBanner.png)
 
 
-# Flash Chat ⚡️
+# Taco Tracker
 
-## Our Goal
+## App Description
 
-The objective of this tutorial is to learn how to incorporate Firebase into our Flutter apps. We'll be using Firebase Cloud Firestore as well as the Firebase authentication package to equip our app with a cloud-based NoSQL database and secure authentication methods. 
+This app allows users to find food trucks in their local area. The food trucks are displayed on a generated Google Maps screen, with icons for each truck. Whenever the user 
+clicks on an Icon it will display an info window that shows the name of the Food Truck and the type of food the truck offers. 
 
-
-## What you will create
+## Current Version
 
 We’re going to build a modern messaging app where users can sign up and log in to chat.
 
-![Finished App](https://github.com/londonappbrewery/Images/blob/master/flash_chat_flutter_demo.gif)
+![Taco Tracker](https://images.app.goo.gl/ZqqFDMtTVGPxsUVo6)
 
-## What you will learn
+## Roadmap
 
-- How to incorporate Firebase into your Flutter projects.
-- How to use Firebase authentication to register and sign in users.
-- How to create beautiful animations using the Flutter Hero widget.
-- How to create custom aniamtions using Flutter's animation controller. 
-- Learn all about mixins and how they differ from superclasses.
-- Learn about Streams and how they work.
-- Learn to use ListViews to build scrolling views.
-- How to use Firebase Cloud Firestore to store and retrieve data on the fly.
+- Show food trucks in WF area
+- Display Truck names
+- Add Splash Screen.
+- Add info screens to show more in depth description of food truck. 
+- Add menus for each food truck.
+- Add images for food trucks, food images as well as images of the trucks location to help users find the truck they are wanting to go to.
+- Add Ordering capability: May be only a mock ordering system depending on technology available at said food truck.
+- Add feature to open Google Maps on user's phone and give them directions to the food truck.
 
 
 
->This is a companion project to The App Brewery's Complete Flutter Development Bootcamp, check out the full course at [www.appbrewery.co](https://www.appbrewery.co/)
+>If you have any questions about this app, feel free to contact me on linkedin [LinkedIn](https://www.linkedin.com/in/derrik-pollock-7396a8180/)
 
-![End Banner](https://github.com/londonappbrewery/Images/blob/master/readme-end-banner.png)
