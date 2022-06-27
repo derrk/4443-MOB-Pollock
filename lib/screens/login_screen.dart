@@ -10,7 +10,8 @@ import 'package:taco_tracker/screens/food_trucks.dart';
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
 
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -18,8 +19,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool showSpinner = false;
   //final _auth = FirebaseAuth.instance;
-  String email;
-  String password;
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,13 +49,13 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                 child: WavyAnimatedTextKit(
                   text: ['Tracker'],
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     color: Colors.orangeAccent,
                     fontSize: 50.0,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 48.0,
               ),
               TextField(
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration:
                     kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               TextField(
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter your password'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24.0,
               ),
               RoundedButton(

@@ -7,14 +7,16 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
+
+  const RegistrationScreen({Key? key}) : super(key: key);
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   bool showSpinner = false;
-  String email;
-  String password;
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
