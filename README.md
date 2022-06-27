@@ -1,6 +1,6 @@
 
 
-# Taco Tracker
+# Taco Tracker 🌮🚚
 
 ## App Description
 
